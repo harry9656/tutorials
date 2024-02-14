@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -34,37 +35,27 @@ public class ChannelSecSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf()
-            .disable()
-            .authorizeRequests()
-            .antMatchers("/anonymous*")
-            .anonymous()
-            .antMatchers("/login*")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .requiresChannel()
-            .antMatchers("/login*", "/perform_login")
-            .requiresSecure()
-            .anyRequest()
-            .requiresInsecure()
-            .and()
-            .sessionManagement()
-            .sessionFixation()
-            .none()
-            .and()
-            .formLogin()
-            .loginPage("/login.html")
-            .loginProcessingUrl("/perform_login")
-            .defaultSuccessUrl("/homepage.html", true)
-            .failureUrl("/login.html?error=true")
-            .and()
-            .logout()
-            .logoutUrl("/perform_logout")
-            .deleteCookies("JSESSIONID")
-            .logoutSuccessHandler(logoutSuccessHandler());
-        return http.build();
+        return http.csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(request -> request.requestMatchers("/anonymous*")
+                .anonymous()
+                .requestMatchers("/login*")
+                .permitAll()
+                .anyRequest()
+                .authenticated())
+            .requiresChannel(request -> request.requestMatchers("/perform_login")
+                .requiresSecure()
+                .anyRequest()
+                .requiresInsecure())
+            .sessionManagement(session -> session.sessionFixation()
+                .none())
+            .formLogin(form -> form.loginPage("/login.html")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/homepage.html", true)
+                .failureUrl("/login.html?error=true"))
+            .logout(logout -> logout.logoutUrl("/perform_logout")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(logoutSuccessHandler()))
+            .build();
     }
 
     @Bean

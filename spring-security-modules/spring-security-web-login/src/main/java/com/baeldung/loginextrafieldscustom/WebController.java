@@ -19,17 +19,13 @@ public class WebController {
 
     @RequestMapping("/index")
     public String index(Model model) {
-        getDomain().ifPresent(d -> {
-            model.addAttribute("domain", d);
-        });
+        getDomain().ifPresent(d -> model.addAttribute("domain", d));
         return "index";
     }
 
     @RequestMapping("/user/index")
     public String userIndex(Model model) {
-        getDomain().ifPresent(d -> {
-            model.addAttribute("domain", d);
-        });
+        getDomain().ifPresent(d -> model.addAttribute("domain", d));
         return "user/index";
     }
 
@@ -40,9 +36,10 @@ public class WebController {
 
     private Optional<String> getDomain() {
         Authentication auth = SecurityContextHolder.getContext()
-            .getAuthentication(); 
+            .getAuthentication();
         String domain = null;
-        if (auth != null && !auth.getClass().equals(AnonymousAuthenticationToken.class)) {
+        if (auth != null && !auth.getClass()
+            .equals(AnonymousAuthenticationToken.class)) {
             User user = (User) auth.getPrincipal();
             domain = user.getDomain();
         }

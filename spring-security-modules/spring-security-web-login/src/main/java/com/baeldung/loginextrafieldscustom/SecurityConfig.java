@@ -1,16 +1,15 @@
 package com.baeldung.loginextrafieldscustom;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -27,32 +26,21 @@ public class SecurityConfig extends AbstractHttpConfigurer<SecurityConfig, HttpS
     @Override
     public void configure(HttpSecurity http) throws Exception {
         AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-        http.addFilterBefore(authenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
+            .authorizeHttpRequests(request -> request.requestMatchers("/css/**", "/index")
+                .permitAll()
+                .requestMatchers("/users/**")
+                .authenticated())
+            .formLogin(form -> form.loginPage("/login"))
+            .logout(logout -> logout.logoutUrl("/logout"))
+            .with(securityConfig(), Customizer.withDefaults());
     }
 
     public static SecurityConfig securityConfig() {
         return new SecurityConfig();
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .antMatchers("/css/**", "/index")
-            .permitAll()
-            .antMatchers("/user/**")
-            .authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/login")
-            .and()
-            .logout()
-            .logoutUrl("/logout")
-            .and()
-            .apply(securityConfig());
-        return http.build();
-    }
-
-    public CustomAuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager) throws Exception {
+    public CustomAuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager) {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
         filter.setAuthenticationManager(authenticationManager);
         filter.setAuthenticationFailureHandler(failureHandler());
@@ -60,14 +48,12 @@ public class SecurityConfig extends AbstractHttpConfigurer<SecurityConfig, HttpS
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authProvider());
     }
 
     public AuthenticationProvider authProvider() {
-        CustomUserDetailsAuthenticationProvider provider 
-            = new CustomUserDetailsAuthenticationProvider(passwordEncoder, userDetailsService);
-        return provider;
+        return new CustomUserDetailsAuthenticationProvider(passwordEncoder, userDetailsService);
     }
 
     public SimpleUrlAuthenticationFailureHandler failureHandler() {

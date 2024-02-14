@@ -3,7 +3,7 @@ package com.baeldung.loginextrafieldscustom;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.lang3.StringUtils; 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public class CustomUserRepository implements UserRepository {
 
     private PasswordEncoder passwordEncoder;
-    
+
     public CustomUserRepository(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -23,10 +23,14 @@ public class CustomUserRepository implements UserRepository {
             return null;
         } else {
             Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
-            User user =  new User(username, domain, 
-                passwordEncoder.encode("secret"), true, 
-                true, true, true, authorities);
-            return user;
+            return new User(username,
+                domain,
+                passwordEncoder.encode("secret"),
+                true,
+                true,
+                true,
+                true,
+                authorities);
         }
     }
 

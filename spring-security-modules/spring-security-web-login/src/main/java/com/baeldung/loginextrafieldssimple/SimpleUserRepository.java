@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public class SimpleUserRepository implements UserRepository {
 
     private PasswordEncoder passwordEncoder;
-    
+
     public SimpleUserRepository(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -23,10 +23,14 @@ public class SimpleUserRepository implements UserRepository {
             return null;
         } else {
             Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
-            User user =  new User(username, domain, 
-                passwordEncoder.encode("secret"), true, 
-                true, true, true, authorities);
-            return user;
+            return  new User(username,
+                domain,
+                passwordEncoder.encode("secret"),
+                true,
+                true,
+                true,
+                true,
+                authorities);
         }
     }
 

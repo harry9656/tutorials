@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,33 +45,26 @@ public class SecSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf()
-            .disable()
-            .authorizeRequests()
-            .antMatchers("/admin/**")
-            .hasRole("ADMIN")
-            .antMatchers("/anonymous*")
-            .anonymous()
-            .antMatchers("/login*")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/login.html")
-            .loginProcessingUrl("/perform_login")
-            .defaultSuccessUrl("/homepage.html", true)
-            // .failureUrl("/login.html?error=true")
-            .failureHandler(authenticationFailureHandler())
-            .and()
-            .logout()
-            .logoutUrl("/perform_logout")
-            .deleteCookies("JSESSIONID")
-            .logoutSuccessHandler(logoutSuccessHandler());
-        // .and()
-        // .exceptionHandling().accessDeniedPage("/accessDenied");
-        // .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
-        return http.build();
+        return http.csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/admin/**")
+                .hasRole("ADMIN")
+                .requestMatchers("/anonymous*")
+                .anonymous()
+                .requestMatchers("/login*")
+                .permitAll()
+                .anyRequest()
+                .authenticated())
+            .formLogin(formLogin -> formLogin.loginPage("/login.html")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/homepage.html", true)
+                .failureUrl("/login.html?error=true")
+                .failureHandler(authenticationFailureHandler()))
+            .logout(logout -> logout.logoutUrl("/perform_logout")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(logoutSuccessHandler()))
+            .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedPage("/accessDenied")
+                .accessDeniedHandler(accessDeniedHandler()))
+            .build();
     }
 
     @Bean

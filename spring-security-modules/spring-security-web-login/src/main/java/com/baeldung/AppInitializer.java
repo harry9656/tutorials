@@ -7,8 +7,8 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 
 public class AppInitializer implements WebApplicationInitializer {
 
@@ -25,7 +25,7 @@ public class AppInitializer implements WebApplicationInitializer {
         appServlet.addMapping("/");
 
         sc.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
-        .addMappingForUrlPatterns(null, false, "/*");
+            .addMappingForUrlPatterns(null, false, "/*");
 
     }
 

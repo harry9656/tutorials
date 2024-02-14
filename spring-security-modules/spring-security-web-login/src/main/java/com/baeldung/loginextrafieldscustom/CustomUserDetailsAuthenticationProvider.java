@@ -37,13 +37,11 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
     }
 
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) 
-        throws AuthenticationException {
+    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
         if (authentication.getCredentials() == null) {
             logger.debug("Authentication failed: no credentials provided");
-            throw new BadCredentialsException(
-                messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+            throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
         }
 
         String presentedPassword = authentication.getCredentials()
@@ -51,8 +49,7 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
 
         if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
             logger.debug("Authentication failed: password does not match stored value");
-            throw new BadCredentialsException(
-                messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+            throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
         }
     }
 
@@ -63,8 +60,7 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
     }
 
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) 
-        throws AuthenticationException {
+    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         CustomAuthenticationToken auth = (CustomAuthenticationToken) authentication;
         UserDetails loadedUser;
 
@@ -83,8 +79,7 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
         }
 
         if (loadedUser == null) {
-            throw new InternalAuthenticationServiceException("UserDetailsService returned null, "
-                + "which is an interface contract violation");
+            throw new InternalAuthenticationServiceException("UserDetailsService returned null, " + "which is an interface contract violation");
         }
         return loadedUser;
     }

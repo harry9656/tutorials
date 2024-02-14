@@ -1,21 +1,20 @@
 package com.baeldung.loginextrafieldssimple;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 public class SimpleAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public static final String SPRING_SECURITY_FORM_DOMAIN_KEY = "domain";
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) 
-        throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         if (!request.getMethod()
             .equals("POST")) {
@@ -43,9 +42,8 @@ public class SimpleAuthenticationFilter extends UsernamePasswordAuthenticationFi
             domain = "";
         }
 
-        String usernameDomain = String.format("%s%s%s", username.trim(), 
-            String.valueOf(Character.LINE_SEPARATOR), domain);
-        return new UsernamePasswordAuthenticationToken(usernameDomain, password);        
+        String usernameDomain = String.format("%s%s%s", username.trim(), String.valueOf(Character.LINE_SEPARATOR), domain);
+        return new UsernamePasswordAuthenticationToken(usernameDomain, password);
     }
 
     private String obtainDomain(HttpServletRequest request) {

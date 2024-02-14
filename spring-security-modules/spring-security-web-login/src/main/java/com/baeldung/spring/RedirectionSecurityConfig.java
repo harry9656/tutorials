@@ -25,16 +25,15 @@ public class RedirectionSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .antMatchers("/login*")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .formLogin()
-            .successHandler(new SavedRequestAwareAuthenticationSuccessHandler());
-        // .successHandler(new RefererAuthenticationSuccessHandler())
-        return http.build();
+        return http.authorizeHttpRequests(request -> request.requestMatchers("/login*")
+                .permitAll()
+                .anyRequest()
+                .authenticated())
+            .formLogin(form -> form.successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+                //.successHandler(new RefererAuthenticationSuccessHandler())\
+            )
+            .build();
+
     }
 
 }
