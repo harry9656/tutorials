@@ -1,6 +1,6 @@
 package com.baeldung.serenity.pageobjects;
 
-import net.thucydides.core.annotations.DefaultUrl;
+import net.serenitybdd.annotations.DefaultUrl;
 import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;

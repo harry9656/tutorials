@@ -1,6 +1,6 @@
 package com.baeldung.serenity.spring.steps;
 
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 
 import static com.baeldung.serenity.spring.RandomNumberUtil.randomInt;
 

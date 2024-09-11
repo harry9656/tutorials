@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
+import net.serenitybdd.annotations.Managed;
 
 @RunWith(SerenityRunner.class)
 public class GoogleSearchLiveTest {

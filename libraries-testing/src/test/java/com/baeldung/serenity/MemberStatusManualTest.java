@@ -1,9 +1,10 @@
 package com.baeldung.serenity;
 
 import com.baeldung.serenity.membership.MemberStatusSteps;
+
+import net.serenitybdd.annotations.Title;
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Steps;
-import net.thucydides.core.annotations.Title;
+import net.serenitybdd.annotations.Steps;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

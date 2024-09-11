@@ -1,7 +1,7 @@
 package com.baeldung.serenity.membership;
 
-import net.thucydides.core.annotations.Pending;
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Pending;
+import net.serenitybdd.annotations.Step;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;

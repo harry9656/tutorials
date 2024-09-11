@@ -3,7 +3,7 @@ package com.baeldung.serenity.spring;
 import com.baeldung.serenity.spring.steps.AdderRestSteps;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Steps;
+import net.serenitybdd.annotations.Steps;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

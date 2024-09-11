@@ -3,7 +3,7 @@ package com.baeldung.serenity.spring;
 import com.baeldung.serenity.spring.steps.AdderSteps;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
-import net.thucydides.core.annotations.Steps;
+import net.serenitybdd.annotations.Steps;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

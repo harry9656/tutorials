@@ -2,7 +2,7 @@ package com.baeldung.serenity.spring;
 
 import com.baeldung.serenity.spring.steps.AdderSteps;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Steps;
+import net.serenitybdd.annotations.Steps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;

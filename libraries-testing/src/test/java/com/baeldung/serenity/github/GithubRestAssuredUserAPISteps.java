@@ -1,6 +1,6 @@
 package com.baeldung.serenity.github;
 
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import org.hamcrest.Matchers;
 
 import java.io.IOException;
